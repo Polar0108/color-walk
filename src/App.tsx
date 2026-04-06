@@ -538,7 +538,7 @@ const WallBoard = ({ themeId, photos, wallPhotoPositions, onUpdatePosition, onDe
       className="w-[340px] h-full bg-[#D0A47D] rounded-[32px] border-[7px] border-[#4D3423] relative overflow-hidden"
     >
       <img 
-        src="https://gd-hbimg-edge.huaban.com/6c459e3a49b4ad514921878149915bac66828d0c2848e1-7cqDrI_fw658webp?auth_key=1775390400-ba3bed92463342f29a8ddd93ebd3ed6a-0-cc781c273b49e4fd5014722025ee1c6c" 
+        src="https://gd-hbimg-edge.huaban.com/6c459e3a49b4ad514921878149915bac66828d0c2848e1-7cqDrI_fw658webp?auth_key=1775462400-be85e303da49463da0ab8f57c9ee917c-0-41e8e534e3cb45fd27f68918ed07f426" 
         className="absolute inset-0 w-full h-full object-cover opacity-80 pointer-events-none"
         referrerPolicy="no-referrer"
         crossOrigin="anonymous"
