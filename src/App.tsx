@@ -152,7 +152,7 @@ const PAGES: PageData[] = [
       middleColor: 'bg-[#fefce8]'
     },
     details: {
-      title: '活力黄',
+      title: '明朗黄',
       items: [
         { label: '视觉捕捉', title: '风景的黄色', desc: '秋日的银杏或夏日的向日葵，是大自然最明亮的馈赠。', image: 'https://images.unsplash.com/photo-1597848212624-a19eb35e2651?q=80&w=300&auto=format&fit=crop' },
         { label: '时尚表达', title: '服饰的黄色', desc: '一件明黄色的单品，能瞬间点亮心情，展现自信魅力。', image: 'https://images.unsplash.com/photo-1643825664857-7e6e4124f289?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
@@ -538,10 +538,9 @@ const WallBoard = ({ themeId, photos, wallPhotoPositions, onUpdatePosition, onDe
       className="w-[340px] h-full bg-[#D0A47D] rounded-[32px] border-[7px] border-[#4D3423] relative overflow-hidden"
     >
       <img 
-        src="https://gd-hbimg-edge.huaban.com/6c459e3a49b4ad514921878149915bac66828d0c2848e1-7cqDrI_fw658webp?auth_key=1775462400-be85e303da49463da0ab8f57c9ee917c-0-41e8e534e3cb45fd27f68918ed07f426" 
+        src="https://gd-hbimg-edge.huaban.com/6c459e3a49b4ad514921878149915bac66828d0c2848e1-7cqDrI_fw658webp?auth_key=1775548800-b0be1574b71949918b124ed4cd4594be-0-59d3e76cde2d61e398281ec339e2fe8f" 
         className="absolute inset-0 w-full h-full object-cover opacity-80 pointer-events-none"
         referrerPolicy="no-referrer"
-        crossOrigin="anonymous"
       />
       
       <div className="relative w-full h-full p-4">
