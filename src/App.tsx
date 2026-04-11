@@ -1,4 +1,4 @@
-import { Heart, ArrowRight, ArrowLeft, Plus, Download, Share2, X, RotateCcw } from 'lucide-react';
+import { Heart, ArrowRight, ArrowLeft, Plus, Download, Share2, X, RotateCcw, User } from 'lucide-react';
 import { motion, AnimatePresence, useMotionValue, useTransform } from 'motion/react';
 import React, { useState, useRef, useEffect } from 'react';
 import { toPng } from 'html-to-image';
@@ -1239,6 +1239,10 @@ export default function App() {
   const [uploadedPhotos, setUploadedPhotos] = useState<Record<string, string[]>>({});
   const [extraWallPhotos, setExtraWallPhotos] = useState<Record<string, string[]>>({});
   const [wallPhotoPositions, setWallPhotoPositions] = useState<Record<string, Record<string, { x: number, y: number, rotate: number }>>>({});
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Simulated login state
+  const [toast, setToast] = useState<string | null>(null);
+  const [navigationSource, setNavigationSource] = useState<'manifest' | 'print'>('print');
 
   const handlePhotoUpload = (themeId: string, index: number, url: string) => {
     setUploadedPhotos(prev => {
@@ -1329,12 +1333,129 @@ export default function App() {
                 <div className="w-2 h-2 bg-white rounded-full" id="logo-dot" />
                 <span className="font-sans font-medium text-sm tracking-wide" id="logo-text">GOOD DAY</span>
               </div>
-              <button 
-                onClick={handleRandomMood}
-                className="px-4 py-2 rounded-full border border-white/30 flex items-center justify-center font-serif text-xs tracking-wide hover:bg-white/10 transition-colors"
-              >
-                随机心情
-              </button>
+              <div className="flex items-center gap-3 relative">
+                <button 
+                  onClick={handleRandomMood}
+                  className="px-4 py-2 rounded-full border border-white/30 flex items-center justify-center font-serif text-xs tracking-wide hover:bg-white/10 transition-colors"
+                >
+                  随机心情
+                </button>
+                <div className="relative">
+                  <button 
+                    onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                    className="w-9 h-9 rounded-full border border-white/30 flex items-center justify-center bg-white/5 hover:bg-white/15 transition-all overflow-hidden"
+                    aria-label="User Profile"
+                  >
+                    {isLoggedIn ? (
+                      <img 
+                        src="https://picsum.photos/seed/user/100/100" 
+                        alt="User" 
+                        className="w-full h-full object-cover"
+                        referrerPolicy="no-referrer"
+                      />
+                    ) : (
+                      <User size={18} className="text-white/80" />
+                    )}
+                  </button>
+
+                  <AnimatePresence>
+                    {isUserMenuOpen && (
+                      <>
+                        {/* Backdrop to close menu */}
+                        <motion.div 
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          onClick={() => setIsUserMenuOpen(false)}
+                          className="fixed inset-0 z-[60]"
+                        />
+                        
+                        <motion.div
+                          initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                          transition={{ duration: 0.2, ease: "easeOut" }}
+                          className="absolute right-0 mt-2 w-[120px] rounded-2xl overflow-hidden z-[70] shadow-2xl border border-white/10"
+                          style={{ 
+                            backgroundColor: 'rgba(0, 0, 0, 0.65)',
+                            backdropFilter: 'blur(12px)',
+                            WebkitBackdropFilter: 'blur(12px)'
+                          }}
+                        >
+                          <div className="pt-3 px-3 pb-4 flex flex-col gap-3">
+                            {/* Account Info */}
+                            <div 
+                              className="flex items-center gap-2 cursor-pointer group overflow-hidden"
+                              onClick={() => !isLoggedIn && setIsLoggedIn(true)}
+                            >
+                              <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center overflow-hidden shrink-0">
+                                {isLoggedIn ? (
+                                  <img 
+                                    src="https://picsum.photos/seed/user/100/100" 
+                                    alt="User" 
+                                    className="w-full h-full object-cover"
+                                    referrerPolicy="no-referrer"
+                                  />
+                                ) : (
+                                  <div className="w-full h-full bg-white" />
+                                )}
+                              </div>
+                              <div className="flex flex-col overflow-hidden min-w-0">
+                                <span className="text-white text-[12px] font-pingfang truncate">
+                                  {isLoggedIn ? "用户ID: 88888" : "点击登录"}
+                                </span>
+                              </div>
+                            </div>
+
+                            <div className="h-[1px] w-full bg-white/10" />
+
+                            {/* Menu Items */}
+                            <div className="flex flex-col gap-3">
+                              <button 
+                                onClick={() => {
+                                  if (isLoggedIn) {
+                                    setNavigationSource('manifest');
+                                    setViewState('wall');
+                                    setIsUserMenuOpen(false);
+                                  } else {
+                                    setToast("功能请登录后再试哦~");
+                                    setTimeout(() => setToast(null), 2000);
+                                  }
+                                }}
+                                className="text-white text-xs font-pingfang text-left hover:opacity-70 transition-opacity"
+                              >
+                                我的照片墙
+                              </button>
+                              <button 
+                                onClick={() => {
+                                  if (!isLoggedIn) {
+                                    setToast("功能请登录后再试哦~");
+                                    setTimeout(() => setToast(null), 2000);
+                                  }
+                                }}
+                                className="text-white text-xs font-pingfang text-left hover:opacity-70 transition-opacity"
+                              >
+                                我的任务
+                              </button>
+                              {isLoggedIn && (
+                                <button 
+                                  onClick={() => {
+                                    setIsLoggedIn(false);
+                                    setIsUserMenuOpen(false);
+                                  }}
+                                  className="text-white text-xs font-pingfang text-left hover:opacity-70 transition-opacity"
+                                >
+                                  登出账号
+                                </button>
+                              )}
+                            </div>
+                          </div>
+                        </motion.div>
+                      </>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </div>
             </div>
 
             {/* Title */}
@@ -1556,7 +1677,10 @@ export default function App() {
             themeName={activeData.details.title}
             onBack={() => setViewState('description')}
             onGoHome={() => setViewState('manifest')}
-            onGoWall={() => setViewState('wall')}
+            onGoWall={() => {
+              setNavigationSource('print');
+              setViewState('wall');
+            }}
           />
         ) : viewState === 'wall' ? (
           <PhotoWallPage 
@@ -1564,12 +1688,32 @@ export default function App() {
             extraWallPhotos={extraWallPhotos}
             wallPhotoPositions={wallPhotoPositions}
             initialThemeId={activeData.id}
-            onBack={() => setViewState('print')}
+            onBack={() => {
+              if (navigationSource === 'manifest') {
+                setViewState('manifest');
+              } else {
+                setViewState('print');
+              }
+            }}
             onAddPhoto={handleAddWallPhoto}
             onUpdatePosition={handleUpdatePhotoPosition}
             onDeletePhoto={handleDeleteWallPhoto}
           />
         ) : null}
+      </AnimatePresence>
+
+      {/* Toast Notification */}
+      <AnimatePresence>
+        {toast && (
+          <motion.div
+            initial={{ opacity: 0, y: 20, x: '-50%' }}
+            animate={{ opacity: 1, y: 0, x: '-50%' }}
+            exit={{ opacity: 0, y: 20, x: '-50%' }}
+            className="fixed top-1/2 left-1/2 z-[100] px-6 py-3 bg-black/80 backdrop-blur-md text-white text-sm font-pingfang rounded-full shadow-2xl pointer-events-none whitespace-nowrap"
+          >
+            {toast}
+          </motion.div>
+        )}
       </AnimatePresence>
     </div>
   );
